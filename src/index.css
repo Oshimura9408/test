@@ -4,12 +4,6 @@ body {
   font-family: sans-serif;
 }
 
-.App-search {
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-}
-
 .jobs {
   border-bottom: 1px salmon solid;
 }
