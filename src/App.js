@@ -39,8 +39,8 @@ console.log(arrr);
 
 function searchingFor(valueFromInput, valueFromInputTwo) {
     return function (x) {
-        return x.keyWord.toLowerCase().includes(valueFromInput.toLowerCase()) &&
-            x.location.toLowerCase().includes(valueFromInputTwo.toLowerCase());
+        return x.title.toLowerCase().includes(valueFromInput.toLowerCase()) &&
+            x.company.toLowerCase().includes(valueFromInputTwo.toLowerCase());
     }
 }
 
@@ -55,6 +55,7 @@ class App extends Component {
             valueFromInputTwo: '',
             test: '',
             testTwo: '',
+            visible: false,
         };
 
         this.searchHandler = this.searchHandler.bind(this);
@@ -88,8 +89,13 @@ class App extends Component {
         return true
     };
 
+    handleReadMoreClck = (e) => {
+        e.preventDefault();
+        this.setState({ visible: true })
+    };
+
   render() {
-        const{valueFromInput,valueFromInputTwo,test, testTwo,  jobs, companys} = this.state;
+        const{valueFromInput,valueFromInputTwo,test, testTwo, visible, companys} = this.state;
     return (
       <div className="App">
           <form action="" className="search-panel">
@@ -117,9 +123,17 @@ class App extends Component {
                   {/*</div>*/}
               {/*)*/}
           {/*}*/}
-          {companys.map(jobsTitle =>
+          {companys.filter(searchingFor(test,testTwo)).map(jobsTitle =>
           <div className='jobs' key={jobsTitle.id}>
-            <p>{jobsTitle.title}</p>
+              <p>{jobsTitle.title}</p>
+              <p>{jobsTitle.company}</p>
+
+              { /* если не visible, то показывай */
+                  !visible && <a onClick={this.handleReadMoreClck} href="#" className='news__readmore'>Подробнее</a>
+              }
+              { /* если visible, то показывай */
+                  visible && <p className='news__big-text'>123</p>
+              }
           </div>
           )
           }
