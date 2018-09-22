@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
 
+const list = fetch(`https://jobs.github.com/positions.json`);
+
+const arrr = [];
+
+list.then((response) => {
+    if (response.ok) {
+        return response.json();
+    }
+    throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`)
+}).then((it) => arrr.push(...it));
+
+
 const jobsList = [
     {
         id: 0,
@@ -23,6 +35,8 @@ const jobsList = [
     },
 ];
 
+console.log(arrr);
+
 function searchingFor(valueFromInput, valueFromInputTwo) {
     return function (x) {
         return x.keyWord.toLowerCase().includes(valueFromInput.toLowerCase()) &&
@@ -35,6 +49,7 @@ class App extends Component {
         super(props);
 
         this.state = {
+            companys: arrr,
             jobs: jobsList,
             valueFromInput: '',
             valueFromInputTwo: '',
@@ -74,16 +89,18 @@ class App extends Component {
     };
 
   render() {
-        const{valueFromInput,valueFromInputTwo,test, testTwo,  jobs} = this.state;
+        const{valueFromInput,valueFromInputTwo,test, testTwo,  jobs, companys} = this.state;
     return (
       <div className="App">
-          <form action="">
+          <form action="" className="search-panel">
               <input type="text"
+                     placeholder="KeyWord"
                      onChange={this.searchHandler}
                      value={valueFromInput}
 
               />
               <input type="text"
+                     placeholder="City"
                      onChange={this.searchHandlerTwo}
                      value={valueFromInputTwo}
 
@@ -93,12 +110,18 @@ class App extends Component {
                   disabled = {this.validate()}
               >Search</button>
           </form>
-          {jobs.filter(searchingFor(test,testTwo)).map(jobsTitle =>
-                  <div className='jobs' key={jobsTitle.id}>
-                      <p>{jobsTitle.keyWord}</p>
-                      <p>{jobsTitle.location}</p>
-                  </div>
-              )
+          {/*{jobs.filter(searchingFor(test,testTwo)).map(jobsTitle =>*/}
+                  {/*<div className='jobs' key={jobsTitle.id}>*/}
+                      {/*<p>{jobsTitle.keyWord}</p>*/}
+                      {/*<p>{jobsTitle.location}</p>*/}
+                  {/*</div>*/}
+              {/*)*/}
+          {/*}*/}
+          {companys.map(jobsTitle =>
+          <div className='jobs' key={jobsTitle.id}>
+            <p>{jobsTitle.title}</p>
+          </div>
+          )
           }
       </div>
     );

@@ -7,3 +7,9 @@ body {
 .jobs {
   border-bottom: 1px salmon solid;
 }
+
+.search-panel {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
