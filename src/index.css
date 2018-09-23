@@ -4,12 +4,38 @@ body {
   font-family: sans-serif;
 }
 
+p {
+  margin: 0;
+}
+
 .jobs {
-  border-bottom: 1px salmon solid;
+  padding: 20px;
+  border: 1px solid #e7e7e7;
+  width: 100%;
 }
 
 .search-panel {
   width: 300px;
   display: flex;
   flex-direction: column;
+}
+
+.vacancy_title {
+  font-size: 22px;
+  color: black;
+}
+
+.vacancy_company {
+  color: #999;
+  font-size: 12px;
+}
+
+.vacancy_location {
+  color: #999;
+  font-size: 12px;
+}
+
+.vacancy_description {
+  width: 90%;
+  padding: 20px;
 }

@@ -1,46 +1,24 @@
 import React, { Component } from 'react';
 
 const list = fetch(`https://jobs.github.com/positions.json`);
+const test = `ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`;
+console.log(test.slice(0,10));
 
-const arrr = [];
+const arrJobs = [];
 
 list.then((response) => {
     if (response.ok) {
         return response.json();
     }
     throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`)
-}).then((it) => arrr.push(...it));
+}).then((it) => arrJobs.push(...it));
 
-
-const jobsList = [
-    {
-        id: 0,
-        keyWord: 'Programming',
-        location: 'Novosibirsk',
-    },
-    {
-        id: 1,
-        keyWord: 'Reporter',
-        location: 'Moscow',
-    },
-    {
-        id: 2,
-        keyWord: 'Saller',
-        location: 'Novosibirsk',
-    },
-    {
-        id: 3,
-        keyWord: 'Taxi',
-        location: 'Peter',
-    },
-];
-
-console.log(arrr);
+console.log(arrJobs);
 
 function searchingFor(valueFromInput, valueFromInputTwo) {
     return function (x) {
-        return x.title.toLowerCase().includes(valueFromInput.toLowerCase()) &&
-            x.company.toLowerCase().includes(valueFromInputTwo.toLowerCase());
+        return x.description.toLowerCase().includes(valueFromInput.toLowerCase()) &&
+            x.location.toLowerCase().includes(valueFromInputTwo.toLowerCase());
     }
 }
 
@@ -49,10 +27,9 @@ class App extends Component {
         super(props);
 
         this.state = {
-            companys: arrr,
-            jobs: jobsList,
-            valueFromInput: '',
-            valueFromInputTwo: '',
+            company: arrJobs,
+            valueCity: '',
+            valueLocation: '',
             test: '',
             testTwo: '',
             visible: false,
@@ -64,76 +41,69 @@ class App extends Component {
 
     onBtnClickHand = (e) => {
       e.preventDefault();
-        const{valueFromInput,valueFromInputTwo} = this.state;
+        const{valueCity,valueLocation} = this.state;
         this.setState({
-            test: valueFromInput,
-            testTwo: valueFromInputTwo,
+            test: valueCity,
+            testTwo: valueLocation,
         });
       console.log(this.state)
 
     };
 
     searchHandler(e) {
-        this.setState({valueFromInput: e.target.value})
+        this.setState({valueCity: e.target.value})
     }
 
     searchHandlerTwo(e) {
-        this.setState({valueFromInputTwo: e.target.value})
+        this.setState({valueLocation: e.target.value})
     }
 
     validate = () => {
-        const { valueFromInput, valueFromInputTwo} = this.state;
-        if (valueFromInput.trim() && valueFromInputTwo.trim()) {
+        const { valueCity, valueLocation} = this.state;
+        if (valueCity.trim() && valueLocation.trim()) {
             return false
         }
         return true
     };
 
-    handleReadMoreClck = (e) => {
+    clear = (e) => {
         e.preventDefault();
-        this.setState({ visible: true })
+        this.setState({
+            test: '',
+            testTwo: '',
+        })
     };
 
   render() {
-        const{valueFromInput,valueFromInputTwo,test, testTwo, visible, companys} = this.state;
+        const{valueCity,valueLocation,test, testTwo, company} = this.state;
     return (
       <div className="App">
           <form action="" className="search-panel">
               <input type="text"
                      placeholder="KeyWord"
                      onChange={this.searchHandler}
-                     value={valueFromInput}
-
+                     value={valueCity}
               />
               <input type="text"
                      placeholder="City"
                      onChange={this.searchHandlerTwo}
-                     value={valueFromInputTwo}
-
+                     value={valueLocation}
               />
               <button
                   onClick={this.onBtnClickHand}
                   disabled = {this.validate()}
               >Search</button>
+              <button
+                  onClick={this.clear}
+              >Clear</button>
           </form>
-          {/*{jobs.filter(searchingFor(test,testTwo)).map(jobsTitle =>*/}
-                  {/*<div className='jobs' key={jobsTitle.id}>*/}
-                      {/*<p>{jobsTitle.keyWord}</p>*/}
-                      {/*<p>{jobsTitle.location}</p>*/}
-                  {/*</div>*/}
-              {/*)*/}
-          {/*}*/}
-          {companys.filter(searchingFor(test,testTwo)).map(jobsTitle =>
+          {company.filter(searchingFor(test,testTwo)).map(jobsTitle =>
           <div className='jobs' key={jobsTitle.id}>
-              <p>{jobsTitle.title}</p>
-              <p>{jobsTitle.company}</p>
+              <p className='vacancy_title'>{jobsTitle.title}</p>
+              <p className='vacancy_company'>{jobsTitle.company}</p>
+              <p className='vacancy_location'>{jobsTitle.location}</p>
+              <div className='vacancy_description' dangerouslySetInnerHTML={{__html: jobsTitle.description.slice(0, 500)+'...'}}/>
 
-              { /* если не visible, то показывай */
-                  !visible && <a onClick={this.handleReadMoreClck} href="#" className='news__readmore'>Подробнее</a>
-              }
-              { /* если visible, то показывай */
-                  visible && <p className='news__big-text'>123</p>
-              }
           </div>
           )
           }
