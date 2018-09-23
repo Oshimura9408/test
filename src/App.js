@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 const list = fetch(`https://jobs.github.com/positions.json`);
-const test = `ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`;
-console.log(test.slice(0,10));
 
 const arrJobs = [];
 
@@ -30,9 +28,8 @@ class App extends Component {
             company: arrJobs,
             valueCity: '',
             valueLocation: '',
-            test: '',
-            testTwo: '',
-            visible: false,
+            check: '',
+            checkTwo: '',
         };
 
         this.searchHandler = this.searchHandler.bind(this);
@@ -43,8 +40,8 @@ class App extends Component {
       e.preventDefault();
         const{valueCity,valueLocation} = this.state;
         this.setState({
-            test: valueCity,
-            testTwo: valueLocation,
+            check: valueCity,
+            checkTwo: valueLocation,
         });
       console.log(this.state)
 
@@ -69,23 +66,25 @@ class App extends Component {
     clear = (e) => {
         e.preventDefault();
         this.setState({
-            test: '',
-            testTwo: '',
+            check: '',
+            checkTwo: '',
+            valueCity: '',
+            valueLocation: '',
         })
     };
 
   render() {
-        const{valueCity,valueLocation,test, testTwo, company} = this.state;
+        const{valueCity,valueLocation,check, checkTwo, company} = this.state;
     return (
       <div className="App">
           <form action="" className="search-panel">
               <input type="text"
-                     placeholder="KeyWord"
+                     placeholder="Key words"
                      onChange={this.searchHandler}
                      value={valueCity}
               />
               <input type="text"
-                     placeholder="City"
+                     placeholder="Location"
                      onChange={this.searchHandlerTwo}
                      value={valueLocation}
               />
@@ -97,7 +96,7 @@ class App extends Component {
                   onClick={this.clear}
               >Clear</button>
           </form>
-          {company.filter(searchingFor(test,testTwo)).map(jobsTitle =>
+          {company.filter(searchingFor(check,checkTwo)).map(jobsTitle =>
           <div className='jobs' key={jobsTitle.id}>
               <p className='vacancy_title'>{jobsTitle.title}</p>
               <p className='vacancy_company'>{jobsTitle.company}</p>
