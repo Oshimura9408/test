@@ -8,6 +8,24 @@ p {
   margin: 0;
 }
 
+button {
+  width: 100px;
+  margin: 0 auto;
+}
+
+input {
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.control_form {
+  margin-top: 10px;
+}
+
+.btn_clear {
+  margin-left: 20px;
+}
+
 .jobs {
   padding: 20px;
   border: 1px solid #e7e7e7;
@@ -37,5 +55,13 @@ p {
 
 .vacancy_description {
   width: 90%;
+  padding: 20px;
+}
+
+.vacancy_type {
+  font-weight: 600;
+}
+
+.empty_list {
   padding: 20px;
 }
